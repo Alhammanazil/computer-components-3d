@@ -73,7 +73,7 @@ export function learnDetailView(root, ctx, id) {
         <span class="counter">${idx + 1} / ${COMPONENTS.length}</span>
       </div>
       <div class="detail-main">
-        ${stageHTML()}
+        ${stageHTML({ card: true })}
         <aside class="panel">
           <span class="tag">${cat.icon} ${cat.name}</span>
           <h1>${c.name}${c.alt !== c.name ? `<small>${c.alt}</small>` : ''}</h1>
@@ -103,10 +103,21 @@ export function learnDetailView(root, ctx, id) {
   ol.innerHTML = parts.map((p, i) => `
     <li data-i="${i}"><b>${i + 1}</b><div><strong>${p.name}</strong><span>${p.desc}</span></div></li>`).join('');
 
+  const card = root.querySelector('.part-card');
+  card.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-close]')) return;
+    card.hidden = true;
+    ctx.viewer.highlightPin(-1);
+    ol.querySelectorAll('li').forEach((li) => li.classList.remove('on'));
+  });
   const select = (i, scroll) => {
+    const p = parts[i];
+    card.innerHTML = `<b>${i + 1}</b><div><strong>${p.name}</strong><span>${p.desc}</span></div><button type="button" data-close aria-label="Tutup">✕</button>`;
+    card.hidden = false;
     ctx.viewer.highlightPin(i);
     ol.querySelectorAll('li').forEach((li, k) => li.classList.toggle('on', k === i));
-    if (scroll) ol.children[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    // di layar lebar daftar ada di samping model; di HP cukup kartu di atas model
+    if (scroll && window.matchMedia('(min-width: 921px)').matches) ol.children[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   };
   ol.addEventListener('click', (e) => {
     const li = e.target.closest('li');

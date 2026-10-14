@@ -2,12 +2,13 @@
  * Panggung 3D: area bergrid biru + canvas viewer + tombol bantu.
  * Mengembalikan elemen; panggil `mountStage` setelah elemen masuk ke DOM.
  */
-export function stageHTML({ tools = true, hint = true } = {}) {
+export function stageHTML({ tools = true, hint = true, card = false } = {}) {
   return `
     <div class="stage">
       <div class="stage-canvas"></div>
       <div class="pins"></div>
-      ${hint ? '<div class="stage-hint"><span>✋</span> Seret untuk memutar 360° · Scroll untuk zoom</div>' : ''}
+      ${hint ? `<div class="stage-hint"><span>✋</span> <span class="hint-d">Seret untuk memutar 360° · Scroll untuk zoom</span><span class="hint-m">Seret untuk memutar · ${card ? 'Ketuk nomor untuk info' : 'Cubit untuk zoom'}</span></div>` : ''}
+      ${card ? '<div class="part-card" hidden></div>' : ''}
       ${tools ? `
       <div class="stage-tools">
         <button type="button" data-act="rotate" class="on" title="Putar otomatis" aria-label="Putar otomatis">⟳</button>
