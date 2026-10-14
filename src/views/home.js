@@ -6,10 +6,10 @@ export function homeView(root, { viewer }) {
     <section class="hero">
       <div class="hero-text">
         <span class="badge">Belajar interaktif · 3D</span>
-        <h1>Kenali <em>komponen komputer</em> dengan cara seru!</h1>
-        <p>Putar, zoom, dan jelajahi ${COMPONENTS.length} komponen komputer dalam tampilan 3D, lalu uji pemahamanmu lewat kuis tebak komponen.</p>
+        <h1><em>Komponenku</em>, teman kenalan dengan isi komputermu!</h1>
+        <p>Bongkar, putar, dan zoom ${COMPONENTS.length} komponen komputer dalam tampilan 3D, lalu uji seberapa kenal kamu dengan komponenmu lewat kuis tebak komponen.</p>
         <div class="cta">
-          <a class="btn btn-primary" href="#/belajar">📘 Belajar Komputer</a>
+          <a class="btn btn-primary" href="#/belajar">📘 Kenali Komponen</a>
           <a class="btn btn-ghost" href="#/tebak">🎯 Tebak Komponen</a>
         </div>
       </div>

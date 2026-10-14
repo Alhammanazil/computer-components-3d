@@ -1,10 +1,10 @@
-# KomputerKu 3D
+# Komponenku
 
 Website belajar komponen komputer dengan model 3D interaktif (putar 360°, zoom) dan kuis **Tebak Komponen**.
 
 ## Fitur
 
-- **Belajar Komputer**: 23 komponen (motherboard, processor, RAM, graphics card, sound card, network card, fan, power supply, hard drive, SSD, optical drive, CD/DVD, floppy disk, flash drive, keyboard, mouse, webcam, joystick, microphone, LCD monitor, speaker, headset, printer), dikelompokkan dalam 4 kategori.
+- **Kenali Komponen**: 23 komponen (motherboard, processor, RAM, graphics card, sound card, network card, fan, power supply, hard drive, SSD, optical drive, CD/DVD, floppy disk, flash drive, keyboard, mouse, webcam, joystick, microphone, LCD monitor, speaker, headset, printer), dikelompokkan dalam 4 kategori.
   - Model 3D yang bisa diseret untuk diputar 360° dan di-zoom, dengan rotasi otomatis.
   - Penanda bernomor pada bagian-bagian penting tiap komponen.
   - Penjelasan: pengertian, fungsi, perumpamaan, dan fakta menarik.

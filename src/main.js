@@ -7,7 +7,7 @@ import { quizView } from './views/quiz.js';
 const app = document.getElementById('app');
 app.innerHTML = `
   <header class="topbar">
-    <a class="brand" href="#/"><span class="brand-logo">🖥️</span><span>Komputer<b>Ku</b> 3D</span></a>
+    <a class="brand" href="#/"><span class="brand-logo">🖥️</span><span>Komponen<b>ku</b></span></a>
     <nav class="nav">
       <a href="#/" data-nav="home"><i>🏠</i><span>Beranda</span></a>
       <a href="#/belajar" data-nav="belajar"><i>📘</i><span>Belajar</span></a>

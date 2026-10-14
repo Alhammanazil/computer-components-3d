@@ -11,7 +11,7 @@ export function learnListView(root, ctx) {
     const list = COMPONENTS.filter((c) => active === 'semua' || c.cat === active);
     root.innerHTML = `
       <section class="page-head">
-        <h1>Belajar Komputer</h1>
+        <h1>Kenali Komponenmu</h1>
         <p><strong>${INTRO.text}</strong></p>
         <p class="muted">Pilih salah satu komponen di bawah untuk melihat model 3D-nya, memutarnya 360°, dan membaca penjelasannya.</p>
       </section>
