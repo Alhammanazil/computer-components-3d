@@ -2,6 +2,8 @@
 
 Website belajar komponen komputer dengan model 3D interaktif (putar 360°, zoom) dan kuis **Tebak Komponen**.
 
+**Live:** https://komponenku.vercel.app
+
 ## Fitur
 
 - **Kenali Komponen**: 23 komponen (motherboard, processor, RAM, graphics card, sound card, network card, fan, power supply, hard drive, SSD, optical drive, CD/DVD, floppy disk, flash drive, keyboard, mouse, webcam, joystick, microphone, LCD monitor, speaker, headset, printer), dikelompokkan dalam 4 kategori.
