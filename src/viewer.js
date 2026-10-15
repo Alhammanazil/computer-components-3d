@@ -7,8 +7,8 @@ const FOV = 35;
 const RADIUS = 1.5; // radius bola pembatas semua model setelah dinormalkan
 
 /** Bangun model, pusatkan, dan skalakan agar semua komponen tampil sama besar. */
-export function prepareModel(id) {
-  const { group, parts, view } = builders[id]();
+export function prepareModel(id, variant) {
+  const { group, parts, view } = builders[id](variant);
   const holder = new THREE.Group();
   holder.add(group);
 
@@ -157,9 +157,9 @@ export class Viewer {
   }
 
   /** Tampilkan model komponen. `pins`: tampilkan penanda bagian-bagian. */
-  setModel(id, { pins = false } = {}) {
+  setModel(id, { pins = false, variant } = {}) {
     this.clear();
-    const m = prepareModel(id);
+    const m = prepareModel(id, variant);
     this.model = m;
     this.scene.add(m.holder);
     this.blob.position.y = m.minY - 0.02;

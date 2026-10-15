@@ -3,6 +3,8 @@ import { Viewer } from './viewer.js';
 import { homeView } from './views/home.js';
 import { learnListView, learnDetailView } from './views/learn.js';
 import { quizView } from './views/quiz.js';
+import { cableListView, cableDetailView } from './views/cables.js';
+import { lanView } from './views/lan.js';
 
 const app = document.getElementById('app');
 app.innerHTML = `
@@ -11,6 +13,7 @@ app.innerHTML = `
     <nav class="nav">
       <a href="#/" data-nav="home"><i>🏠</i><span>Beranda</span></a>
       <a href="#/belajar" data-nav="belajar"><i>📘</i><span>Belajar</span></a>
+      <a href="#/kabel" data-nav="kabel"><i>🔌</i><span>Kabel</span></a>
       <a href="#/tebak" data-nav="tebak"><i>🎯</i><span>Tebak</span></a>
     </nav>
   </header>
@@ -42,6 +45,10 @@ function route() {
   if (page === 'belajar') {
     nav = 'belajar';
     cleanup = arg ? learnDetailView(root, ctx, arg) : learnListView(root, ctx);
+  } else if (page === 'kabel') {
+    nav = 'kabel';
+    if (arg === 'lan') cleanup = lanView(root, ctx);
+    else cleanup = arg ? cableDetailView(root, ctx, arg) : cableListView(root, ctx);
   } else if (page === 'tebak') {
     nav = 'tebak';
     cleanup = quizView(root, ctx);

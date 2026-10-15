@@ -54,6 +54,45 @@ export function learnListView(root, ctx) {
   render();
 }
 
+/* ------------------------------------------------- daftar bagian + kartu info */
+/** Isi daftar bagian dan kartu info dari model yang sedang tampil. Mengembalikan fungsi `refresh` untuk dipanggil setelah model diganti. */
+export function mountParts(root, viewer) {
+  const ol = root.querySelector('.parts');
+  const card = root.querySelector('.part-card');
+  const fill = () => {
+    ol.innerHTML = viewer.model.parts.map((p, i) => `
+    <li data-i="${i}"><b>${i + 1}</b><div><strong>${p.name}</strong><span>${p.desc}</span></div></li>`).join('');
+  };
+  const close = () => {
+    card.hidden = true;
+    viewer.highlightPin(-1);
+    ol.querySelectorAll('li').forEach((li) => li.classList.remove('on'));
+  };
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('[data-close]')) close();
+  });
+  const select = (i, scroll) => {
+    const p = viewer.model.parts[i];
+    card.innerHTML = `<b>${i + 1}</b><div><strong>${p.name}</strong><span>${p.desc}</span></div><button type="button" data-close aria-label="Tutup">✕</button>`;
+    card.hidden = false;
+    viewer.highlightPin(i);
+    ol.querySelectorAll('li').forEach((li, k) => li.classList.toggle('on', k === i));
+    // di layar lebar daftar ada di samping model; di HP cukup kartu di atas model
+    if (scroll && window.matchMedia('(min-width: 921px)').matches) ol.children[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  };
+  ol.addEventListener('click', (e) => {
+    const li = e.target.closest('li');
+    if (li) select(+li.dataset.i, false);
+  });
+  viewer.onPin = (i) => select(i, true);
+  fill();
+  return () => {
+    close();
+    fill();
+    viewer.onPin = (i) => select(i, true);
+  };
+}
+
 /* --------------------------------------------------------------------- detail */
 export function learnDetailView(root, ctx, id) {
   const idx = COMPONENTS.findIndex((c) => c.id === id);
@@ -98,32 +137,7 @@ export function learnDetailView(root, ctx, id) {
   ctx.viewer.setAutoRotate(true);
   ctx.viewer.setModel(c.id, { pins: true });
 
-  const parts = ctx.viewer.model.parts;
-  const ol = root.querySelector('.parts');
-  ol.innerHTML = parts.map((p, i) => `
-    <li data-i="${i}"><b>${i + 1}</b><div><strong>${p.name}</strong><span>${p.desc}</span></div></li>`).join('');
-
-  const card = root.querySelector('.part-card');
-  card.addEventListener('click', (e) => {
-    if (!e.target.closest('[data-close]')) return;
-    card.hidden = true;
-    ctx.viewer.highlightPin(-1);
-    ol.querySelectorAll('li').forEach((li) => li.classList.remove('on'));
-  });
-  const select = (i, scroll) => {
-    const p = parts[i];
-    card.innerHTML = `<b>${i + 1}</b><div><strong>${p.name}</strong><span>${p.desc}</span></div><button type="button" data-close aria-label="Tutup">✕</button>`;
-    card.hidden = false;
-    ctx.viewer.highlightPin(i);
-    ol.querySelectorAll('li').forEach((li, k) => li.classList.toggle('on', k === i));
-    // di layar lebar daftar ada di samping model; di HP cukup kartu di atas model
-    if (scroll && window.matchMedia('(min-width: 921px)').matches) ol.children[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  };
-  ol.addEventListener('click', (e) => {
-    const li = e.target.closest('li');
-    if (li) select(+li.dataset.i, false);
-  });
-  ctx.viewer.onPin = (i) => select(i, true);
+  mountParts(root, ctx.viewer);
 
   const onKey = (e) => {
     if (e.key === 'ArrowLeft') location.hash = `#/belajar/${prev.id}`;

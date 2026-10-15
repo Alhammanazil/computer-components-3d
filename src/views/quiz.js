@@ -1,6 +1,16 @@
 import { CATEGORIES, COMPONENTS, catOf } from '../data.js';
+import { PORTS } from '../cables.js';
 import { getThumb } from '../thumbs.js';
 import { stageHTML, mountStage } from './stage.js';
+
+/** Kuis memakai komponen dan juga kabel & port; keduanya diseragamkan di sini. */
+const CABLE_CAT = { id: 'kabel', name: 'Kabel & Port', icon: '🔌' };
+const POOL = [
+  ...COMPONENTS,
+  ...PORTS.map((p) => ({ id: p.id, name: p.name, cat: 'kabel', job: p.job, href: `#/kabel/${p.id}` })),
+];
+const hrefOf = (c) => c.href || `#/belajar/${c.id}`;
+const catInfo = (c) => (c.cat === 'kabel' ? CABLE_CAT : catOf(c));
 
 const BEST_KEY = 'kk3d-best';
 const readBest = () => {
@@ -24,9 +34,9 @@ const shuffle = (a) => {
 
 /** 3 pengecoh: usahakan sekategori (lebih menantang), sisanya acak. */
 function makeOptions(c) {
-  const same = shuffle(COMPONENTS.filter((x) => x.id !== c.id && x.cat === c.cat));
-  const other = shuffle(COMPONENTS.filter((x) => x.id !== c.id && x.cat !== c.cat));
-  const wrong = [...same.slice(0, 2), ...other].slice(0, 3);
+  const same = shuffle(POOL.filter((x) => x.id !== c.id && x.cat === c.cat));
+  const other = shuffle(POOL.filter((x) => x.id !== c.id && x.cat !== c.cat));
+  const wrong = [...same.slice(0, c.cat === 'kabel' ? 3 : 2), ...other].slice(0, 3);
   return shuffle([c, ...wrong]);
 }
 
@@ -57,7 +67,7 @@ export function quizView(root, ctx) {
             <label>Kategori</label>
             <div class="seg wrap" data-key="cat">
               <button class="${state.cat === 'semua' ? 'on' : ''}" data-v="semua">Semua</button>
-              ${CATEGORIES.map((c) => `<button class="${state.cat === c.id ? 'on' : ''}" data-v="${c.id}">${c.icon} ${c.name}</button>`).join('')}
+              ${[...CATEGORIES, CABLE_CAT].map((c) => `<button class="${state.cat === c.id ? 'on' : ''}" data-v="${c.id}">${c.icon} ${c.name}</button>`).join('')}
             </div>
           </div>
           <button class="btn btn-primary btn-lg" data-start>Mulai Kuis ▶</button>
@@ -82,7 +92,7 @@ export function quizView(root, ctx) {
 
   /* ---------------------------------------------------------------- bermain */
   const start = () => {
-    const pool = COMPONENTS.filter((c) => state.cat === 'semua' || c.cat === state.cat);
+    const pool = POOL.filter((c) => state.cat === 'semua' || c.cat === state.cat);
     const picked = shuffle(pool).slice(0, Math.min(state.count, pool.length));
     quiz = {
       items: picked.map((c) => ({ c, options: makeOptions(c), answer: null, hinted: false, dropped: [] })),
@@ -115,7 +125,7 @@ export function quizView(root, ctx) {
           </div>
         </div>
         <div class="quiz-bar" aria-live="polite">
-          <span class="q-text">Apa nama komponen komputer di atas?</span>
+          <span class="q-text">${q.c.cat === 'kabel' ? 'Apa nama konektor atau port di atas?' : 'Apa nama komponen komputer di atas?'}</span>
         </div>
       </div>`;
 
@@ -174,7 +184,7 @@ export function quizView(root, ctx) {
       hintBtn.disabled = true;
       const wrong = shuffle(q.options.map((o, k) => k).filter((k) => q.options[k].id !== q.c.id)).slice(0, 2);
       wrong.forEach((k) => { opts[k].disabled = true; opts[k].classList.add('gone'); });
-      const cat = catOf(q.c);
+      const cat = catInfo(q.c);
       bar.querySelector('.q-text').innerHTML = `💡 Kategori: <b>${cat.name}</b>. Fungsi: ${q.c.job} <em>(poin separuh)</em>`;
     });
     root.querySelector('.quiz-bar').addEventListener('click', (e) => {
@@ -226,7 +236,7 @@ export function quizView(root, ctx) {
           <div class="review">
             <h2>Yang perlu dipelajari lagi</h2>
             ${wrong.map((q) => `
-              <a class="review-item" href="#/belajar/${q.c.id}">
+              <a class="review-item" href="${hrefOf(q.c)}">
                 <span class="thumb sm" data-thumb="${q.c.id}"></span>
                 <span><strong>${q.c.name}</strong><small>Kamu menjawab: ${q.options[q.answer].name}</small></span>
                 <i>Pelajari →</i>
@@ -235,6 +245,7 @@ export function quizView(root, ctx) {
           <div class="cta">
             <button class="btn btn-primary" data-again>🔁 Main Lagi</button>
             <a class="btn btn-ghost" href="#/belajar">📘 Belajar</a>
+            <a class="btn btn-ghost" href="#/kabel">🔌 Kabel</a>
           </div>
         </div>
       </section>`;

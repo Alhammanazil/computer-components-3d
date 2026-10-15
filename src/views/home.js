@@ -10,6 +10,7 @@ export function homeView(root, { viewer }) {
         <p>Bongkar, putar, dan zoom ${COMPONENTS.length} komponen komputer dalam tampilan 3D, lalu uji seberapa kenal kamu dengan komponenmu lewat kuis tebak komponen.</p>
         <div class="cta">
           <a class="btn btn-primary" href="#/belajar">📘 Kenali Komponen</a>
+          <a class="btn btn-ghost" href="#/kabel">🔌 Kabel &amp; Port</a>
           <a class="btn btn-ghost" href="#/tebak">🎯 Tebak Komponen</a>
         </div>
       </div>
